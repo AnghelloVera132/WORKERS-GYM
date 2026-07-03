@@ -1,0 +1,51 @@
+﻿<main>
+    <section class="bg-black text-light py-5 mb-5 shadow">
+        <div class="container">
+            <div class="row justify-content-center text-center">
+                <div class="col-md-8">
+                    <h1 class="display-4 fw-bold">BIENVENIDO, <span id="nombre-usuario" class="text-danger">INVITADO</span></h1>
+                    <hr class="border-light border-2 opacity-25 w-50 mx-auto">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="row">
+            <h2 class="mb-5 fw-bold">Mostrando el Historial de Compras</h2>
+            <div class="table-responsive shadow-sm rounded">
+                <table class="table table-hover align-middle bg-white">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col" style="width: 100px;">Producto</th>
+                            <th scope="col">Descripción</th>
+                            <th scope="col">Fecha de Compra</th>
+                            <th scope="col">Precio Total</th>
+                            <th scope="col">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-compras">
+                        <tr>
+                            <td>
+                                <img src="imgGYM/imagenMoises.jpg" class="img-thumbnail" alt="Proteina Marido Moises" style="width: 60px; height: 60px; object-fit: cover;">
+                            </td>
+                            <td>
+                                <span class="fw-bold">Proteína Marido Moisés</span><br>
+                                <small class="text-muted">Categoría: Suplementos</small>
+                            </td>
+                            <td>08 de Abril, 2026</td>
+                            <td class="fw-bold text-danger">S/ 000.00</td>
+                            <td><span class="badge rounded-pill bg-success">Entregado</span></td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="5" class="text-center py-4 text-muted">
+                                <i class="bi bi-plus-circle me-2"></i> Las próximas compras aparecerán aquí...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>

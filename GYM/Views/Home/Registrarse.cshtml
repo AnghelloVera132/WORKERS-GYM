@@ -1,0 +1,77 @@
+﻿<main>
+    <section class="bg-black text-light py-5 mb-5 shadow">
+        <div class="container">
+            <div class="row justify-content-center text-center">
+                <div class="col-md-8">
+                    <h1 class="display-4 fw-bold">CREAR <span class="text-danger">PERFIL</span></h1>
+                    <hr class="border-light border-2 opacity-25 w-50 mx-auto">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container py-5">
+        <div class="card mb-3 bg-dark text-light mx-auto" style="max-width: 1000px;">
+            <div class="row g-0">
+                <div class="col-md-7">
+                    <div class="card-body p-4">
+                        <h4 class="card-title text-uppercase">Registrarse :</h4>
+                        <hr class="border-light border-2 opacity-25 mx-auto mb-4" style="width: 100%;">
+                        
+                        @if (ViewBag.Error != null)
+                        {
+                            <div class="alert alert-danger py-2 text-center" role="alert">
+                                @ViewBag.Error
+                            </div>
+                        }
+
+                        <form asp-controller="Home" asp-action="Registrarse" method="post">
+                            <div class="row text-dark">
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" name="Nombre" class="form-control" id="inputNombre" placeholder="Nombre" required>
+                                        <label for="inputNombre">Nombre</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input type="text" name="Apellido" class="form-control" id="inputApellido" placeholder="Apellido" required>
+                                        <label for="inputApellido">Apellido</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input type="text" name="DNI" class="form-control" id="inputDNI" placeholder="DNI" required>
+                                        <label for="inputDNI">DNI</label>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="email" name="Correo" class="form-control" id="inputCorreo" placeholder="name@example.com" required>
+                                        <label for="inputCorreo">Correo Electrónico</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input type="password" name="Contraseña" class="form-control" id="inputPass" placeholder="Contraseña" required>
+                                        <label for="inputPass">Contraseña</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <p class="text-center text-light mt-3" style="font-size: 0.9rem;">
+                                Si ya se registró entre a ->
+                                <a asp-controller="Home" asp-action="IniciarSesion" class="text-info pe-auto text-decoration-none">Iniciar Sesión</a>
+                            </p>
+                            
+                            <div class="text-center py-2 mt-2">
+                                <button type="submit" class="btn btn-danger w-50 fw-bold" style="font-size: 0.9rem;">REGISTRARSE</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <img src="~/imgGYM/Gym-Interior/WORKERS.png"
+                         class="img-fluid rounded-end h-100 w-100"
+                         style="object-fit: cover;"
+                         alt="Workers Logo">
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

@@ -1,0 +1,52 @@
+/* Importar fuente fuerte de Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@400;700&display=swap');
+
+/* Usamos el nombre de la clase de Bootstrap para ser más específicos */
+.btn.btn-danger {
+    transition: transform 0.3s ease-in-out !important;
+}
+
+.btn.btn-danger:hover {
+    transform: scale(1.1) !important;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4) !important;
+}
+
+/* INDEX*/
+#seccion-ofrecemos .card {
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    cursor: default; /* Para que el mouse cambie a la manito */
+}
+
+/* Efecto al pasar el mouse */
+#seccion-ofrecemos .card:hover {
+    transform: scale(1.03); /*crece */
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3); /* Sombra más profunda para dar relieve */
+    border-color: #5a5a5a; /* Opcional: el borde cambia al rojo de Teddy Fit */
+}
+
+#seccion-planes .card {
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    cursor: default;
+}
+
+#seccion-planes .card:hover {
+    transform: translate(-10px) scale(1.03); /* Se eleva un poquito y crece */
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    border-color: #b10d0d;
+}
+
+#seccion-ofrecemos .card-img-top {
+    /* Fuerza a TODAS las imágenes a tener la misma altura */
+    height: 200px;
+    /* Hace que la imagen llene el espacio SIN deformarse
+       - Mantiene proporción
+    */
+    object-fit: cover;
+    /* Asegura que la imagen ocupe todo el ancho de la card */
+    width: 100%;
+}
+/* INDEX*/
+
+/* Menu de Barras*/
+
+/* Menu de Barras*/
