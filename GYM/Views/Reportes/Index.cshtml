@@ -1,0 +1,234 @@
+﻿@using GYM.Models
+
+@{
+    ViewData["Title"] = "Reportes";
+
+    var ultimosPagos = ViewBag.UltimosPagos as List<Pago>
+        ?? new List<Pago>();
+
+    int totalMiembros = ViewBag.TotalMiembros ?? 0;
+    int membresiasActivas = ViewBag.MembresiasActivas ?? 0;
+    int totalPagos = ViewBag.TotalPagos ?? 0;
+    decimal ingresosTotales = ViewBag.IngresosTotales ?? 0m;
+}
+
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">
+                Reportes Generales
+            </h2>
+
+            <p class="text-muted mb-0">
+                Resumen general de la gestión del gimnasio
+            </p>
+        </div>
+
+        <a asp-controller="Home"
+           asp-action="PanelAdmin"
+           class="btn btn-outline-dark">
+            <i class="bi bi-arrow-left me-1"></i>
+            Volver al panel
+        </a>
+    </div>
+
+    <div class="row g-4 mb-5">
+
+        <div class="col-md-3">
+            <div class="card shadow border-0 h-100">
+                <div class="card-body p-4">
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted mb-1">
+                                Total miembros
+                            </p>
+
+                            <h2 class="fw-bold mb-0">
+                                @totalMiembros
+                            </h2>
+                        </div>
+
+                        <i class="bi bi-people-fill fs-1 text-danger"></i>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow border-0 h-100">
+                <div class="card-body p-4">
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted mb-1">
+                                Membresías activas
+                            </p>
+
+                            <h2 class="fw-bold mb-0">
+                                @membresiasActivas
+                            </h2>
+                        </div>
+
+                        <i class="bi bi-card-checklist fs-1 text-success"></i>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow border-0 h-100">
+                <div class="card-body p-4">
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted mb-1">
+                                Pagos registrados
+                            </p>
+
+                            <h2 class="fw-bold mb-0">
+                                @totalPagos
+                            </h2>
+                        </div>
+
+                        <i class="bi bi-receipt fs-1 text-dark"></i>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow border-0 h-100">
+                <div class="card-body p-4">
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted mb-1">
+                                Ingresos totales
+                            </p>
+
+                            <h3 class="fw-bold mb-0 text-success">
+                                S/ @ingresosTotales.ToString("0.00")
+                            </h3>
+                        </div>
+
+                        <i class="bi bi-cash-stack fs-1 text-success"></i>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h3 class="fw-bold mb-1">
+                Últimos Pagos
+            </h3>
+
+            <p class="text-muted mb-0">
+                Movimientos registrados recientemente
+            </p>
+        </div>
+
+        <a asp-controller="Pagos"
+           asp-action="Index"
+           class="btn btn-dark">
+            Ver todos los pagos
+        </a>
+    </div>
+
+    <div class="card shadow border-0">
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Cliente</th>
+                            <th>DNI</th>
+                            <th>Membresía</th>
+                            <th>Monto</th>
+                            <th>Método</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @if (ultimosPagos.Count == 0)
+                        {
+                            <tr>
+                                <td colspan="7"
+                                    class="text-center py-5 text-muted">
+
+                                    <i class="bi bi-receipt fs-2 d-block mb-2"></i>
+
+                                    No hay pagos registrados.
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var pago in ultimosPagos)
+                            {
+                                <tr>
+                                    <td>
+                                        @pago.Membresia?.Miembro?.Nombre
+                                        @pago.Membresia?.Miembro?.Apellido
+                                    </td>
+
+                                    <td>
+                                        @(pago.Membresia?.Miembro?.DNI ?? "—")
+                                    </td>
+
+                                    <td>
+                                        @(pago.Membresia?.Tipo ?? "—")
+                                    </td>
+
+                                    <td class="fw-bold">
+                                        S/ @pago.Monto.ToString("0.00")
+                                    </td>
+
+                                    <td>
+                                        @pago.MetodoPago
+                                    </td>
+
+                                    <td>
+                                        @pago.FechaPago.ToString("dd/MM/yyyy HH:mm")
+                                    </td>
+
+                                    <td>
+                                        @if (pago.Estado == "Pagado")
+                                        {
+                                            <span class="badge bg-success">
+                                                Pagado
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">
+                                                @pago.Estado
+                                            </span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>

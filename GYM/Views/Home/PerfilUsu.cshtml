@@ -1,51 +1,397 @@
-﻿<main>
+﻿@using GYM.Models
+
+@{
+    ViewData["Title"] = "Mi Perfil";
+
+    var nombre = Context.Session.GetString("UsuarioNombre") ?? "Usuario";
+    var correo = Context.Session.GetString("UsuarioCorreo") ?? "—";
+
+    var membresias = ViewBag.Membresias as List<Membresia>
+        ?? new List<Membresia>();
+
+    var pagos = ViewBag.Pagos as List<Pago>
+        ?? new List<Pago>();
+
+    var asistencias = ViewBag.Asistencias as List<Asistencia>
+        ?? new List<Asistencia>();
+
+    var membresiaActual = membresias
+        .OrderByDescending(m => m.FechaInicio)
+        .FirstOrDefault();
+}
+
+<main>
+
+    <!-- ENCABEZADO -->
     <section class="bg-black text-light py-5 mb-5 shadow">
         <div class="container">
             <div class="row justify-content-center text-center">
                 <div class="col-md-8">
-                    <h1 class="display-4 fw-bold">BIENVENIDO, <span id="nombre-usuario" class="text-danger">INVITADO</span></h1>
+
+                    <p class="text-uppercase text-secondary mb-2"
+                       style="letter-spacing: 3px;">
+                        Área del miembro
+                    </p>
+
+                    <h1 class="display-5 fw-bold">
+                        BIENVENIDO,
+                        <span class="text-danger">
+                            @nombre.ToUpper()
+                        </span>
+                    </h1>
+
                     <hr class="border-light border-2 opacity-25 w-50 mx-auto">
+
+                    <p class="text-light opacity-75 mb-0">
+                        Consulta tu membresía, pagos y asistencias registradas.
+                    </p>
+
                 </div>
             </div>
         </div>
     </section>
 
-    <div class="container">
-        <div class="row">
-            <h2 class="mb-5 fw-bold">Mostrando el Historial de Compras</h2>
-            <div class="table-responsive shadow-sm rounded">
-                <table class="table table-hover align-middle bg-white">
-                    <thead class="table-dark">
-                        <tr>
-                            <th scope="col" style="width: 100px;">Producto</th>
-                            <th scope="col">Descripción</th>
-                            <th scope="col">Fecha de Compra</th>
-                            <th scope="col">Precio Total</th>
-                            <th scope="col">Estado</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabla-compras">
-                        <tr>
-                            <td>
-                                <img src="imgGYM/imagenMoises.jpg" class="img-thumbnail" alt="Proteina Marido Moises" style="width: 60px; height: 60px; object-fit: cover;">
-                            </td>
-                            <td>
-                                <span class="fw-bold">Proteína Marido Moisés</span><br>
-                                <small class="text-muted">Categoría: Suplementos</small>
-                            </td>
-                            <td>08 de Abril, 2026</td>
-                            <td class="fw-bold text-danger">S/ 000.00</td>
-                            <td><span class="badge rounded-pill bg-success">Entregado</span></td>
-                        </tr>
+    <div class="container pb-5">
 
-                        <tr>
-                            <td colspan="5" class="text-center py-4 text-muted">
-                                <i class="bi bi-plus-circle me-2"></i> Las próximas compras aparecerán aquí...
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+        <!-- DATOS DEL USUARIO -->
+        <div class="card shadow border-0 rounded-4 mb-4">
+            <div class="card-body p-4">
+
+                <div class="d-flex align-items-center mb-3">
+
+                    <div class="bg-dark text-light rounded-circle
+                                d-flex align-items-center
+                                justify-content-center me-3"
+                         style="width: 55px; height: 55px;">
+
+                        <i class="bi bi-person-fill fs-3"></i>
+                    </div>
+
+                    <div>
+                        <h4 class="fw-bold mb-0">
+                            Mis datos
+                        </h4>
+
+                        <span class="text-muted">
+                            Información de la cuenta
+                        </span>
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+                        <span class="text-muted d-block">
+                            Nombre
+                        </span>
+
+                        <span class="fw-semibold">
+                            @nombre
+                        </span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <span class="text-muted d-block">
+                            Correo electrónico
+                        </span>
+
+                        <span class="fw-semibold">
+                            @correo
+                        </span>
+                    </div>
+
+                </div>
+
             </div>
         </div>
+
+        <!-- MEMBRESÍA -->
+        <div class="card shadow border-0 rounded-4 mb-5">
+
+            <div class="card-header bg-dark text-light py-3">
+                <h4 class="mb-0">
+                    <i class="bi bi-card-checklist me-2"></i>
+                    Mi Membresía
+                </h4>
+            </div>
+
+            <div class="card-body p-4">
+
+                @if (membresiaActual != null)
+                {
+                    var estaVigente =
+                        membresiaActual.FechaFin.Date >= DateTime.Today;
+
+                    <div class="row g-4 align-items-center">
+
+                        <div class="col-md-3">
+                            <span class="text-muted d-block">
+                                Plan
+                            </span>
+
+                            <span class="fw-bold fs-5">
+                                @membresiaActual.Tipo
+                            </span>
+                        </div>
+
+                        <div class="col-md-2">
+                            <span class="text-muted d-block">
+                                Precio
+                            </span>
+
+                            <span class="fw-bold">
+                                S/ @membresiaActual.Precio.ToString("0.00")
+                            </span>
+                        </div>
+
+                        <div class="col-md-2">
+                            <span class="text-muted d-block">
+                                Inicio
+                            </span>
+
+                            <span class="fw-semibold">
+                                @membresiaActual.FechaInicio.ToString("dd/MM/yyyy")
+                            </span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <span class="text-muted d-block">
+                                Vencimiento
+                            </span>
+
+                            <span class="fw-semibold">
+                                @membresiaActual.FechaFin.ToString("dd/MM/yyyy")
+                            </span>
+                        </div>
+
+                        <div class="col-md-2">
+                            <span class="text-muted d-block mb-1">
+                                Estado
+                            </span>
+
+                            @if (estaVigente)
+                            {
+                                <span class="badge bg-success">
+                                    Activa
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">
+                                    Vencida
+                                </span>
+                            }
+                        </div>
+
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-4">
+
+                        <i class="bi bi-info-circle fs-1 text-muted"></i>
+
+                        <h5 class="mt-3 fw-bold">
+                            No tienes una membresía registrada
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Consulta con recepción para obtener información.
+                        </p>
+
+                    </div>
+                }
+
+            </div>
+        </div>
+
+        <!-- HISTORIAL DE PAGOS -->
+        <div class="d-flex justify-content-between
+                    align-items-center mb-3">
+
+            <div>
+                <h2 class="fw-bold mb-1">
+                    Mis Pagos
+                </h2>
+
+                <p class="text-muted mb-0">
+                    Historial de pagos registrados
+                </p>
+            </div>
+
+            <span class="badge bg-dark fs-6">
+                @pagos.Count registro(s)
+            </span>
+
+        </div>
+
+        <div class="card shadow border-0 rounded-4 mb-5">
+            <div class="card-body p-0">
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle mb-0">
+
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Membresía</th>
+                                <th>Monto</th>
+                                <th>Método</th>
+                                <th>Fecha de pago</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @if (pagos.Count == 0)
+                            {
+                                <tr>
+                                    <td colspan="5"
+                                        class="text-center py-5 text-muted">
+
+                                        <i class="bi bi-receipt fs-2 d-block mb-2"></i>
+
+                                        No tienes pagos registrados.
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                @foreach (var pago in pagos)
+                                {
+                                    <tr>
+
+                                        <td>
+                                            @(pago.Membresia?.Tipo ?? "—")
+                                        </td>
+
+                                        <td class="fw-bold">
+                                            S/ @pago.Monto.ToString("0.00")
+                                        </td>
+
+                                        <td>
+                                            @pago.MetodoPago
+                                        </td>
+
+                                        <td>
+                                            @pago.FechaPago.ToString(
+                                                "dd/MM/yyyy HH:mm"
+                                            )
+                                        </td>
+
+                                        <td>
+                                            @if (pago.Estado == "Pagado")
+                                            {
+                                                <span class="badge bg-success">
+                                                    Pagado
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-secondary">
+                                                    @pago.Estado
+                                                </span>
+                                            }
+                                        </td>
+
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- HISTORIAL DE ASISTENCIAS -->
+        <div class="d-flex justify-content-between
+                    align-items-center mb-3">
+
+            <div>
+                <h2 class="fw-bold mb-1">
+                    Mis Asistencias
+                </h2>
+
+                <p class="text-muted mb-0">
+                    Historial de ingresos registrados al gimnasio
+                </p>
+            </div>
+
+            <span class="badge bg-danger fs-6">
+                @asistencias.Count registro(s)
+            </span>
+
+        </div>
+
+        <div class="card shadow border-0 rounded-4">
+            <div class="card-body p-0">
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle mb-0">
+
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Hora de entrada</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @if (asistencias.Count == 0)
+                            {
+                                <tr>
+                                    <td colspan="3"
+                                        class="text-center py-5 text-muted">
+
+                                        <i class="bi bi-calendar-x fs-2 d-block mb-2"></i>
+
+                                        No tienes asistencias registradas.
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                @foreach (var asistencia in asistencias)
+                                {
+                                    <tr>
+
+                                        <td class="fw-semibold">
+                                            @asistencia.FechaHoraEntrada.ToString("dd/MM/yyyy")
+                                        </td>
+
+                                        <td>
+                                            @asistencia.FechaHoraEntrada.ToString("HH:mm:ss")
+                                        </td>
+
+                                        <td>
+                                            <span class="badge bg-success">
+                                                Registrada
+                                            </span>
+                                        </td>
+
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+
     </div>
 </main>

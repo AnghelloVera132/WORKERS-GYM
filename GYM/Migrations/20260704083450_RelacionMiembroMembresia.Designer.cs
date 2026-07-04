@@ -4,6 +4,7 @@ using GymWorkersApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GYM.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260704083450_RelacionMiembroMembresia")]
+    partial class RelacionMiembroMembresia
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,27 +24,6 @@ namespace GYM.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("GYM.Models.Asistencia", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("FechaHoraEntrada")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("MiembroId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MiembroId");
-
-                    b.ToTable("Asistencias");
-                });
 
             modelBuilder.Entity("GYM.Models.Membresia", b =>
                 {
@@ -65,8 +47,7 @@ namespace GYM.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Precio")
-                        .HasPrecision(10, 2)
-                        .HasColumnType("decimal(10,2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Tipo")
                         .IsRequired()
@@ -119,50 +100,6 @@ namespace GYM.Migrations
                     b.ToTable("Miembros");
                 });
 
-            modelBuilder.Entity("GYM.Models.Pago", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Estado")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("FechaPago")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("MembresiaId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MetodoPago")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Monto")
-                        .HasPrecision(10, 2)
-                        .HasColumnType("decimal(10,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MembresiaId");
-
-                    b.ToTable("Pagos");
-                });
-
-            modelBuilder.Entity("GYM.Models.Asistencia", b =>
-                {
-                    b.HasOne("GYM.Models.Miembro", "Miembro")
-                        .WithMany()
-                        .HasForeignKey("MiembroId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Miembro");
-                });
-
             modelBuilder.Entity("GYM.Models.Membresia", b =>
                 {
                     b.HasOne("GYM.Models.Miembro", "Miembro")
@@ -172,17 +109,6 @@ namespace GYM.Migrations
                         .IsRequired();
 
                     b.Navigation("Miembro");
-                });
-
-            modelBuilder.Entity("GYM.Models.Pago", b =>
-                {
-                    b.HasOne("GYM.Models.Membresia", "Membresia")
-                        .WithMany()
-                        .HasForeignKey("MembresiaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Membresia");
                 });
 #pragma warning restore 612, 618
         }

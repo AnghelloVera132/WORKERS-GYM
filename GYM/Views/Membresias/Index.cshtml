@@ -1,0 +1,134 @@
+﻿@model List<GYM.Models.Membresia>
+
+@{
+    ViewData["Title"] = "Membresías";
+    var rol = Context.Session.GetString("UsuarioRol");
+}
+
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">
+                Gestión de Membresías
+            </h2>
+            <p class="text-muted mb-0">
+                Administración de planes y vencimientos
+            </p>
+        </div>
+
+        <div class="d-flex gap-2">
+            @if (rol == "Administrador")
+            {
+                <a asp-controller="Home"
+                   asp-action="PanelAdmin"
+                   class="btn btn-outline-dark">
+                    <i class="bi bi-arrow-left me-1"></i>
+                    Volver al panel
+                </a>
+            }
+            else if (rol == "Recepcion")
+            {
+                <a asp-controller="Home"
+                   asp-action="PanelRecepcion"
+                   class="btn btn-outline-dark">
+                    <i class="bi bi-arrow-left me-1"></i>
+                    Volver al panel
+                </a>
+            }
+
+            <a asp-controller="Membresias"
+               asp-action="Crear"
+               class="btn btn-danger">
+                <i class="bi bi-plus-circle me-1"></i>
+                Nueva Membresía
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow border-0">
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>DNI</th>
+                            <th>Tipo</th>
+                            <th>Precio</th>
+                            <th>Inicio</th>
+                            <th>Vencimiento</th>
+                            <th>Estado</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (Model.Count == 0)
+                        {
+                            <tr>
+                                <td colspan="8"
+                                    class="text-center py-5 text-muted">
+                                    No hay membresías registradas.
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @if (item.Miembro != null)
+                                        {
+                                            <span class="fw-semibold">
+                                                @item.Miembro.Nombre
+                                                @item.Miembro.Apellido
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">
+                                                Miembro no disponible
+                                            </span>
+                                        }
+                                    </td>
+
+                                    <td>@(item.Miembro?.DNI ?? "—")</td>
+                                    <td>@item.Tipo</td>
+                                    <td class="fw-semibold">S/ @item.Precio.ToString("0.00")</td>
+                                    <td>@item.FechaInicio.ToString("dd/MM/yyyy")</td>
+                                    <td>@item.FechaFin.ToString("dd/MM/yyyy")</td>
+
+                                    <td>
+                                        @if (item.Estado == "Activa")
+                                        {
+                                            <span class="badge bg-success">Activa</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">@item.Estado</span>
+                                        }
+                                    </td>
+
+                                    <td>
+                                        <a asp-controller="Pagos"
+                                           asp-action="Crear"
+                                           asp-route-membresiaId="@item.Id"
+                                           class="btn btn-sm btn-outline-danger">
+                                            <i class="bi bi-cash-coin me-1"></i>
+                                            Registrar pago
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

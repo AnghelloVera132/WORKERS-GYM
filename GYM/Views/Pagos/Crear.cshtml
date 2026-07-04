@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "Registrar Pago";
+    var membresia = ViewBag.Membresia as GYM.Models.Membresia;
+}
+
+<div class="container py-5">
+    <div class="card shadow mx-auto" style="max-width: 750px;">
+        <div class="card-header bg-dark text-light">
+            <h4 class="mb-0">Registrar Pago</h4>
+        </div>
+
+        <div class="card-body p-4">
+            @if (membresia != null)
+            {
+                <div class="alert alert-secondary">
+                    <strong>Cliente:</strong> @membresia.Miembro?.Nombre @membresia.Miembro?.Apellido <br />
+                    <strong>DNI:</strong> @membresia.Miembro?.DNI <br />
+                    <strong>Membresía:</strong> @membresia.Tipo <br />
+                    <strong>Monto a pagar:</strong> S/ @membresia.Precio.ToString("0.00")
+                </div>
+
+                <form asp-controller="Pagos" asp-action="Crear" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <input type="hidden" name="MembresiaId" value="@membresia.Id" />
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Método de pago</label>
+                        <select name="MetodoPago" class="form-select" required>
+                            <option value="">Seleccione método</option>
+                            <option value="Efectivo">Efectivo</option>
+                            <option value="Yape">Yape</option>
+                            <option value="Plin">Plin</option>
+                            <option value="Tarjeta">Tarjeta</option>
+                        </select>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a asp-controller="Membresias" asp-action="Index" class="btn btn-secondary">
+                            Cancelar
+                        </a>
+
+                        <button type="submit" class="btn btn-danger fw-bold">
+                            Confirmar Pago
+                        </button>
+                    </div>
+                </form>
+            }
+            else
+            {
+                <div class="alert alert-danger">
+                    No se encontró la membresía seleccionada.
+                </div>
+            }
+        </div>
+    </div>
+</div>

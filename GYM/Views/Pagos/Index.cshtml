@@ -1,0 +1,77 @@
+﻿@model List<GYM.Models.Pago>
+
+@{
+    ViewData["Title"] = "Pagos";
+    var rol = Context.Session.GetString("UsuarioRol");
+}
+
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Gestión de Pagos</h2>
+            <p class="text-muted mb-0">Consulta de pagos registrados</p>
+        </div>
+
+        @if (rol == "Administrador")
+        {
+            <a asp-controller="Home" asp-action="PanelAdmin" class="btn btn-outline-dark">
+                <i class="bi bi-arrow-left me-1"></i>
+                Volver al panel
+            </a>
+        }
+        else if (rol == "Recepcion")
+        {
+            <a asp-controller="Home" asp-action="PanelRecepcion" class="btn btn-outline-dark">
+                <i class="bi bi-arrow-left me-1"></i>
+                Volver al panel
+            </a>
+        }
+    </div>
+
+    <div class="card shadow border-0">
+        <div class="card-body p-0">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Cliente</th>
+                        <th>DNI</th>
+                        <th>Membresía</th>
+                        <th>Monto</th>
+                        <th>Método</th>
+                        <th>Fecha de pago</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model.Count == 0)
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center py-5 text-muted">
+                                No hay pagos registrados.
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Membresia?.Miembro?.Nombre @item.Membresia?.Miembro?.Apellido</td>
+                                <td>@item.Membresia?.Miembro?.DNI</td>
+                                <td>@item.Membresia?.Tipo</td>
+                                <td class="fw-semibold">S/ @item.Monto.ToString("0.00")</td>
+                                <td>@item.MetodoPago</td>
+                                <td>@item.FechaPago.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>
+                                    <span class="badge bg-success">@item.Estado</span>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

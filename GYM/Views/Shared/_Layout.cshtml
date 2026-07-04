@@ -20,16 +20,54 @@
                     </a>
                 </div>
                 <div class="col-4 d-flex justify-content-end align-items-center pe-4">
-                    <a asp-controller="Home" asp-action="IniciarSesion" class="text-light me-4 text-decoration-none">
-                        <i class="bi bi-person-circle" style="font-size: 1.8rem;"></i>
-                    </a>
-                    <a asp-controller="Home" asp-action="CarritoCompras" class="text-light text-decoration-none position-relative">
-                        <i class="bi bi-cart3" style="font-size: 1.8rem;"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">0</span>
-                    </a>
+
+                    @{
+                        var rol = Context.Session.GetString("UsuarioRol");
+                        var nombreUsuario = Context.Session.GetString("UsuarioNombre");
+                    }
+
+                    @if (!string.IsNullOrEmpty(rol))
+                    {
+                        var accionPanel = "PerfilUsu";
+
+                        if (rol == "Administrador")
+                        {
+                            accionPanel = "PanelAdmin";
+                        }
+                        else if (rol == "Recepcion")
+                        {
+                            accionPanel = "PanelRecepcion";
+                        }
+
+                        <a asp-controller="Home"
+                           asp-action="@accionPanel"
+                           class="text-light me-3 text-decoration-none"
+                           title="Ir a mi panel">
+
+                            <i class="bi bi-person-circle me-1"></i>
+
+                            @nombreUsuario (@rol)
+                        </a>
+
+                        <a asp-controller="Home"
+                           asp-action="CerrarSesion"
+                           class="btn btn-outline-light btn-sm">
+                            Cerrar sesión
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Home"
+                           asp-action="IniciarSesion"
+                           class="text-light text-decoration-none"
+                           title="Iniciar sesión">
+
+                            <i class="bi bi-person-circle"
+                               style="font-size: 1.8rem;"></i>
+                        </a>
+                    }
+
                 </div>
-            </div>
-        </div>
         
         <nav class="navbar navbar-expand-sm bg-body-tertiary">
             <div class="container-fluid">
@@ -43,9 +81,6 @@
                         </li>
                         <li class="nav-item ps-5">
                             <a class="nav-link" asp-controller="Home" asp-action="Horarios">Horarios</a>
-                        </li>
-                        <li class="nav-item ps-5">
-                            <a class="nav-link" asp-controller="Home" asp-action="Tienda">Tienda</a>
                         </li>
                         <li class="nav-item ps-5">
                             <a class="nav-link" asp-controller="Home" asp-action="Contacto">Contacto</a>

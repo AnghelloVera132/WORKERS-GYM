@@ -23,6 +23,8 @@ namespace GYM.Models
         [Required]
         public string Contraseña { get; set; }
 
+        public string Rol { get; set; } = "Usuario";
+
         public DateTime FechaRegistro { get; set; } = DateTime.Now;
     }
 }

@@ -1,0 +1,124 @@
+﻿@{
+    ViewData["Title"] = "Nueva Membresía";
+}
+
+<div class="container py-5">
+    <div class="card shadow mx-auto" style="max-width: 750px;">
+        <div class="card-header bg-dark text-light py-3">
+            <h4 class="mb-0">
+                <i class="bi bi-card-checklist me-2"></i>
+                Registrar Membresía
+            </h4>
+        </div>
+
+        <div class="card-body p-4">
+
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert alert-danger text-center">
+                    @ViewBag.Error
+                </div>
+            }
+
+            <form asp-controller="Membresias"
+                  asp-action="Crear"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <div class="mb-4">
+                    <label for="DNI" class="form-label fw-bold">
+                        DNI del miembro
+                    </label>
+
+                    <input type="text"
+                           name="DNI"
+                           id="DNI"
+                           value="@ViewBag.DNI"
+                           class="form-control"
+                           maxlength="8"
+                           minlength="8"
+                           pattern="[0-9]{8}"
+                           placeholder="Ingrese DNI de 8 dígitos"
+                           required />
+
+                    <div class="form-text">
+                        El sistema buscará automáticamente al miembro registrado.
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="Tipo" class="form-label fw-bold">
+                        Tipo de membresía
+                    </label>
+
+                    <select name="Tipo"
+                            id="Tipo"
+                            class="form-select"
+                            required>
+                        <option value="">
+                            Seleccione una membresía
+                        </option>
+
+                        <option value="Mensual">
+                            Mensual — S/ 60.00
+                        </option>
+
+                        <option value="Trimestral">
+                            Trimestral — S/ 160.00
+                        </option>
+
+                        <option value="Anual">
+                            Anual — S/ 600.00
+                        </option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label for="FechaInicio" class="form-label fw-bold">
+                        Fecha de inicio
+                    </label>
+
+                    <input type="date"
+                           name="FechaInicio"
+                           id="FechaInicio"
+                           class="form-control"
+                           value="@DateTime.Today.ToString("yyyy-MM-dd")"
+                           required />
+
+                    <div class="form-text">
+                        La fecha de vencimiento se calculará automáticamente.
+                    </div>
+                </div>
+
+                <div class="alert alert-secondary">
+                    <strong>Planes disponibles:</strong>
+                    <div class="mt-2">
+                        Mensual: S/ 60.00 — duración de 1 mes
+                    </div>
+                    <div>
+                        Trimestral: S/ 160.00 — duración de 3 meses
+                    </div>
+                    <div>
+                        Anual: S/ 600.00 — duración de 1 año
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <a asp-controller="Membresias"
+                       asp-action="Index"
+                       class="btn btn-secondary">
+                        <i class="bi bi-arrow-left me-1"></i>
+                        Cancelar
+                    </a>
+
+                    <button type="submit"
+                            class="btn btn-danger fw-bold">
+                        <i class="bi bi-check-circle me-1"></i>
+                        Guardar Membresía
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

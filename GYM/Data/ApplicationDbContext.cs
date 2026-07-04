@@ -5,12 +5,32 @@ namespace GymWorkersApp.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        public ApplicationDbContext(
+            DbContextOptions<ApplicationDbContext> options)
+            : base(options)
         {
         }
 
-        // Aquí le decimos a SQL Server qué tablas debe crear
+        // Tablas de la base de datos
         public DbSet<Miembro> Miembros { get; set; }
-        public DbSet<Rutina> Rutinas { get; set; }
+        public DbSet<Membresia> Membresias { get; set; }
+        public DbSet<Pago> Pagos { get; set; }
+        public DbSet<Asistencia> Asistencias { get; set; }
+
+        // Configuración de los modelos
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Precio de membresía
+            modelBuilder.Entity<Membresia>()
+                .Property(m => m.Precio)
+                .HasPrecision(10, 2);
+
+            // Monto del pago
+            modelBuilder.Entity<Pago>()
+                .Property(p => p.Monto)
+                .HasPrecision(10, 2);
+        }
     }
 }
